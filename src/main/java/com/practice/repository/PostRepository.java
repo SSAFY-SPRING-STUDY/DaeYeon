@@ -38,13 +38,7 @@ public class PostRepository{
         if(!optional.isEmpty())
             entity = optional.get();
 
-        PostEntity newEntity = new PostEntity(entity.getId(),
-                request.getTitle(),
-                request.getContent(),
-                entity.getAuthor());
-
-        postList.remove(entity);
-        postList.add(newEntity);
+        entity.modify(request.getTitle(), request.getContent());
     }
 
     public void deleteById(Long id){
