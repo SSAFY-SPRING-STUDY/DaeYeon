@@ -4,8 +4,11 @@ import com.practice.controller.dto.request.PostRequest;
 import com.practice.controller.dto.response.PostResponse;
 import com.practice.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -15,10 +18,18 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping
+    //@PostMapping
     public PostResponse createPost(@RequestBody PostRequest request){
         PostResponse response = postService.save(request);
         return response;
+    }
+    @PostMapping
+    public ResponseEntity<PostResponse> createPost2(@RequestBody PostRequest request){
+        PostResponse response = postService.save(request);
+
+        URI location = URI.create("/posts/" + response.getId());
+        return ResponseEntity.created(location).body(response);
+        //return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
