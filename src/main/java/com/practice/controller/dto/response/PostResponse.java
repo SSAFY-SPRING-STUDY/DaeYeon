@@ -1,20 +1,23 @@
 package com.practice.controller.dto.response;
 
 import com.practice.entity.PostEntity;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Getter @AllArgsConstructor
-public class PostResponse{
+@Getter
+@RequiredArgsConstructor
+public class PostResponse {
     private final Long id;
     private final String title;
     private final String content;
     private final String author;
 
-    public PostResponse(PostEntity post) {
-        this.id = post.getId();
-        this.title = post.getTitle();
-        this.content = post.getContent();
-        this.author = post.getAuthor();
+    public static PostResponse fromEntity(PostEntity post) {
+        return new PostResponse(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getAuthor()
+        );
     }
 }

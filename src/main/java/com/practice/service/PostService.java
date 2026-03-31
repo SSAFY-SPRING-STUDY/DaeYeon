@@ -20,12 +20,9 @@ public class PostService {
                 request.getContent(),
                 request.getAuthor());
 
-        PostEntity returnedEntity = postRepository.save(postEntity);
+        PostEntity savedEntity = postRepository.save(postEntity);
 
-        PostResponse response = new PostResponse(returnedEntity.getId(),
-                returnedEntity.getTitle(),
-                returnedEntity.getTitle(),
-                returnedEntity.getAuthor());
+        PostResponse response = PostResponse.fromEntity(savedEntity);
 
         return response;
     }
@@ -34,10 +31,7 @@ public class PostService {
         List<PostEntity> postList = postRepository.findAll();
         List<PostResponse> list = new ArrayList<>();
         for(PostEntity postEntity : postList){
-            PostResponse response = new PostResponse(postEntity.getId(),
-                    postEntity.getTitle(),
-                    postEntity.getTitle(),
-                    postEntity.getAuthor());
+            PostResponse response = PostResponse.fromEntity(postEntity);
             list.add(response);
         }
         return list;
@@ -45,7 +39,7 @@ public class PostService {
 
     public PostResponse findById(Long id){
         PostEntity post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("게시물 X"));
-        return new PostResponse(post);
+        return PostResponse.fromEntity(post);
     }
 
     public void update(Long id, PostRequest request) {

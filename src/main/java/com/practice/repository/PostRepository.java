@@ -35,7 +35,7 @@ public class PostRepository{
     public void update(Long id, PostRequest request) {
         Optional<PostEntity> optional = findById(id);
         PostEntity entity = null;
-        if(!optional.isEmpty())
+        if(optional.isPresent())
             entity = optional.get();
 
         entity.modify(request.getTitle(), request.getContent());
@@ -43,7 +43,7 @@ public class PostRepository{
 
     public void deleteById(Long id){
         Optional<PostEntity> optional = findById(id);
-        if(!optional.isEmpty())
+        if(optional.isPresent())
             postList.remove(optional.get());
     }
 }
