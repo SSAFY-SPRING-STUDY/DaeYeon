@@ -1,6 +1,5 @@
-package com.practice.entity;
+package com.practice.domain.post.entity;
 
-import com.practice.domain.member.entity.MemberEntity;
 import lombok.Getter;
 
 @Getter
@@ -10,9 +9,9 @@ public class PostEntity {
     private Long id;
     private String title;
     private String content;
-    private MemberEntity author;
+    private String author;
 
-    public PostEntity(String title, String content, MemberEntity author) {
+    public PostEntity(String title, String content, String author) {
         this.id = AUTO_INCREMENT++;
         this.title = title;
         this.content = content;

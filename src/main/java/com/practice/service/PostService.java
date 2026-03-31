@@ -2,6 +2,8 @@ package com.practice.service;
 
 import com.practice.controller.dto.request.PostRequest;
 import com.practice.controller.dto.response.PostResponse;
+import com.practice.domain.member.entity.MemberEntity;
+import com.practice.domain.member.repository.MemberRepository;
 import com.practice.entity.PostEntity;
 import com.practice.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
-    public PostResponse save(PostRequest request){
+    public PostResponse save(PostRequest request, long authorId){
+        MemberEntity author = memberRepository.findById(authorId).orElseThrow(
+                () -> new IllegalArgumentException("Member not found")
+        );
+
         PostEntity postEntity = new PostEntity(request.getTitle(),
                 request.getContent(),
-                request.getAuthor());
+                author);
 
         PostEntity savedEntity = postRepository.save(postEntity);
 

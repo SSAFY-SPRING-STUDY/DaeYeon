@@ -2,6 +2,7 @@ package com.practice.controller;
 
 import com.practice.controller.dto.request.PostRequest;
 import com.practice.controller.dto.response.PostResponse;
+import com.practice.domain.auth.component.SessionManager;
 import com.practice.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +13,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
 public class PostController {
-
+    private final SessionManager sessionManager;
     private final PostService postService;
 
     @PostMapping
-    public PostResponse createPost(@RequestBody PostRequest request){
-        PostResponse response = postService.save(request);
+    public PostResponse createPost(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody PostRequest request){
+
+        long authorId = sessionManager.getMemberId(authHeader);
+
+        PostResponse response = postService.save(request, authorId);
         return response;
     }
 
