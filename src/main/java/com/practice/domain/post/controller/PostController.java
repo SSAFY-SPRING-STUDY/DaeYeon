@@ -1,8 +1,8 @@
-package com.practice.controller;
+package com.practice.domain.post.controller;
 
-import com.practice.controller.dto.request.PostRequest;
-import com.practice.controller.dto.response.PostResponse;
-import com.practice.service.PostService;
+import com.practice.domain.post.controller.dto.request.PostRequest;
+import com.practice.domain.post.controller.dto.response.PostResponse;
+import com.practice.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,18 +16,17 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public PostResponse createPost(@RequestBody PostRequest request){
-        PostResponse response = postService.save(request);
-        return response;
+    public PostResponse createPost(@RequestBody PostRequest request) {
+        return postService.save(request);
     }
 
     @GetMapping
-    public List<PostResponse> findAllPosts(){
+    public List<PostResponse> findAllPosts() {
         return postService.findAll();
     }
 
     @GetMapping("/{id}")
-    public PostResponse findPostById(@PathVariable Long id){
+    public PostResponse findPostById(@PathVariable Long id) {
         PostResponse response = null;
         try {
             response = postService.findById(id);
@@ -38,12 +37,12 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public void updatePost(@PathVariable Long id, @RequestBody PostRequest request){
+    public void updatePost(@PathVariable Long id, @RequestBody PostRequest request) {
         postService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id){
+    public void deletePost(@PathVariable Long id) {
         postService.deleteById(id);
     }
 }

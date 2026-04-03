@@ -1,4 +1,4 @@
-package com.practice.service;
+package com.practice.domain.hello.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

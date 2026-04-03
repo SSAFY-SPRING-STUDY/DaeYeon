@@ -1,7 +1,7 @@
-package com.practice.repository;
+package com.practice.domain.post.repository;
 
-import com.practice.controller.dto.request.PostRequest;
-import com.practice.entity.PostEntity;
+import com.practice.domain.post.controller.dto.request.PostRequest;
+import com.practice.domain.post.entity.PostEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,16 +10,16 @@ import java.util.Optional;
 
 
 @Repository
-public class PostRepository{
+public class PostRepository {
 
     List<PostEntity> postList = new ArrayList<>();
 
-    public PostEntity save(PostEntity entity){
+    public PostEntity save(PostEntity entity) {
         postList.add(entity);
         return entity;
     }
 
-    public List<PostEntity> findAll(){
+    public List<PostEntity> findAll() {
         return postList;
     }
 
@@ -35,15 +35,15 @@ public class PostRepository{
     public void update(Long id, PostRequest request) {
         Optional<PostEntity> optional = findById(id);
         PostEntity entity = null;
-        if(optional.isPresent())
+        if (optional.isPresent())
             entity = optional.get();
 
-        entity.modify(request.getTitle(), request.getContent());
+        entity.modify(request.title(), request.content());
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         Optional<PostEntity> optional = findById(id);
-        if(optional.isPresent())
+        if (optional.isPresent())
             postList.remove(optional.get());
     }
 }
