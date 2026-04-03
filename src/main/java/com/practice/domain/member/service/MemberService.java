@@ -15,16 +15,17 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public MemberResponse createMember(MemberRequest request) {
-        MemberEntity memberEntity = MemberEntity.fromRequest(request);
+        MemberEntity memberEntity = MemberRequest.toEntity(request);
         MemberEntity savedEntity = memberRepository.saveMember(memberEntity);
 
         return MemberResponse.fromEntity(savedEntity);
     }
 
-    public MemberResponse findById(String loginId) {
-        MemberEntity memberEntity = memberRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
-
-        return MemberResponse.fromEntity(memberEntity);
+    public MemberResponse findById(Long id) throws Exception{
+        MemberEntity entity = memberRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("사용자 정보를 불러올 수 없습니다.")
+        );
+        return MemberResponse.fromEntity(entity);
     }
+
 }

@@ -3,6 +3,7 @@ package com.practice.domain.auth.component;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,21 +17,16 @@ public class SessionManager {
         return token;
     }
 
-    public Long getMemberId(String token){
-        Long id = sessionStore.get(token);
-        if(id==null) {
-            throw new RuntimeException("유효하지 않은 세션입니다.");
-        }
-        return id;
+    public Optional<Long> getMemberId(String token){
+        if(sessionStore.get(token) == null)
+            return Optional.empty();
+        return Optional.of(sessionStore.get(token));
     }
 
     public void removeSession(String token){
         sessionStore.remove(token);
     }
 
-    public boolean isSessionValid(String token){
-        return sessionStore.containsKey(token);
-    }
 
 
 

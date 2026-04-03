@@ -5,16 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class MemberEntity {
-    private static Long AutoIncrement = 1L;
+    private static Long AUTO_INCREMENT = 1L;
 
     private Long id;
     private String loginId;
     private String password;
     private String name;
 
-    public static MemberEntity fromRequest(MemberRequest request){
-        return new MemberEntity(AutoIncrement++, request.loginId(), request.password(), request.name());
+    public MemberEntity(String loginId, String password, String name) {
+        this.id = AUTO_INCREMENT++;
+        this.loginId = loginId;
+        this.password = password;
+        this.name = name;
     }
 }

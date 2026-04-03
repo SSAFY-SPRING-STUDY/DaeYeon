@@ -1,5 +1,6 @@
 package com.practice.domain.member.repository;
 
+import com.practice.domain.auth.controller.dto.request.LoginRequest;
 import com.practice.domain.member.entity.MemberEntity;
 import org.springframework.stereotype.Repository;
 
@@ -16,11 +17,18 @@ public class MemberRepository {
         return memberEntity;
     }
 
-    public Optional<MemberEntity> findByLoginId(String loginId) {
+    public Optional<MemberEntity> findByLogin(LoginRequest request) {
         for(MemberEntity member : memberStore.values()){
-            if(member.getLoginId().equals(loginId))
+            if(member.getLoginId().equals(request.loginId())
+                    && member.getPassword().equals(request.password()))
                 return Optional.of(member);
         }
         return Optional.empty();
+    }
+
+    public Optional<MemberEntity> findById(Long id) {
+        if(memberStore.get(id) == null)
+            return Optional.empty();
+        return Optional.of(memberStore.get(id));
     }
 }

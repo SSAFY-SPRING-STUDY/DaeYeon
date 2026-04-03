@@ -16,10 +16,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     public PostResponse save(PostRequest request) {
-        PostEntity postEntity = new PostEntity(request.title(),
-                request.content(),
-                request.author());
-
+        PostEntity postEntity = PostRequest.toEntity(request);
         PostEntity savedEntity = postRepository.save(postEntity);
 
         return PostResponse.fromEntity(savedEntity);
