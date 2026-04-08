@@ -6,10 +6,10 @@ import lombok.Getter;
 public class MemberEntity {
     private static Long AUTO_INCREMENT = 1L;
 
-    private Long id;
+    private final Long id;
     private String loginId;
     private String password;
-    private String name;
+    private final String name;
 
     public boolean isValidPassword(String password){
         return this.password.equals(password);
