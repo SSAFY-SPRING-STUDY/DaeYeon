@@ -1,7 +1,5 @@
 package com.practice.domain.member.entity;
 
-import com.practice.domain.member.controller.dto.request.MemberRequest;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +10,10 @@ public class MemberEntity {
     private String loginId;
     private String password;
     private String name;
+
+    public boolean isValidPassword(String password){
+        return this.password.equals(password);
+    }
 
     public MemberEntity(String loginId, String password, String name) {
         this.id = AUTO_INCREMENT++;

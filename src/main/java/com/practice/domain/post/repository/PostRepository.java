@@ -1,6 +1,5 @@
 package com.practice.domain.post.repository;
 
-import com.practice.domain.post.controller.dto.request.PostRequest;
 import com.practice.domain.post.entity.PostEntity;
 import org.springframework.stereotype.Repository;
 
@@ -32,18 +31,7 @@ public class PostRepository {
         return Optional.empty();
     }
 
-    public void update(Long id, PostRequest request) {
-        Optional<PostEntity> optional = findById(id);
-        PostEntity entity = null;
-        if (optional.isPresent())
-            entity = optional.get();
-
-        entity.modify(request.title(), request.content());
-    }
-
-    public void deleteById(Long id) {
-        Optional<PostEntity> optional = findById(id);
-        if (optional.isPresent())
-            postList.remove(optional.get());
+    public void deleteById(PostEntity post) {
+        postList.remove(post);
     }
 }

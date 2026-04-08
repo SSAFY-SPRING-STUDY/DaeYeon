@@ -4,6 +4,8 @@ import com.practice.domain.post.controller.dto.request.PostRequest;
 import com.practice.domain.post.controller.dto.response.PostResponse;
 import com.practice.domain.post.entity.PostEntity;
 import com.practice.domain.post.repository.PostRepository;
+import com.practice.global.exception.CustomException;
+import com.practice.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,15 +35,23 @@ public class PostService {
     }
 
     public PostResponse findById(Long id) {
-        PostEntity post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("게시물 X"));
+        PostEntity post = postRepository.findById(id).orElseThrow(
+                () -> new CustomException(ErrorCode.POST_NOT_FOUND)
+        );
         return PostResponse.fromEntity(post);
     }
 
     public void update(Long id, PostRequest request) {
-        postRepository.update(id, request);
+        PostEntity post = postRepository.findById(id).orElseThrow(
+                () -> new CustomException(ErrorCode.POST_NOT_FOUND)
+        );
+        post.modify(request.title(), request.content());
     }
 
     public void deleteById(Long id) {
-        postRepository.deleteById(id);
+        PostEntity post = postRepository.findById(id).orElseThrow(
+                () -> new CustomException(ErrorCode.POST_NOT_FOUND)
+        );
+        postRepository.deleteById(post);
     }
 }

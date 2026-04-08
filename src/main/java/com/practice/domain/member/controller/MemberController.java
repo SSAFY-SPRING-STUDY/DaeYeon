@@ -6,36 +6,29 @@ import com.practice.domain.member.controller.dto.request.MemberRequest;
 import com.practice.domain.member.controller.dto.response.MemberResponse;
 import com.practice.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/members")
-@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
     private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<MemberResponse> createMember(@RequestBody MemberRequest request){
+    @ResponseStatus(HttpStatus.CREATED)
+    public MemberResponse createMember(@RequestBody MemberRequest request){
         MemberResponse response = memberService.createMember(request);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return response;
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberResponse> getMyInfo(@RequestHeader("Authorization") String authHeader){
+    @ResponseStatus(HttpStatus.OK)
+    public MemberResponse getMyInfo(@RequestHeader("Authorization") String authHeader){
         String token = AuthorizationUtils.getAccessToken(authHeader);
-        try{
-            Long memberId = authService.getMemberId(token);
-            return ResponseEntity.ok(memberService.findById(memberId));
-        }catch(Exception e){
-            log.error("Failed to retrieve member info: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        Long memberId = authService.getMemberId(token);
+        return memberService.findById(memberId);
     }
 }
