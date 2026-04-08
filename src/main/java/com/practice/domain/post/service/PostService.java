@@ -52,6 +52,6 @@ public class PostService {
         PostEntity post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(ErrorCode.POST_NOT_FOUND)
         );
-        postRepository.deleteById(post);
+        postRepository.delete(post);
     }
 }

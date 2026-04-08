@@ -31,7 +31,7 @@ public class PostRepository {
         return Optional.empty();
     }
 
-    public void deleteById(PostEntity post) {
+    public void delete(PostEntity post) {
         postList.remove(post);
     }
 }
