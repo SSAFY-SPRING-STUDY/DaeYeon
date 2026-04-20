@@ -9,13 +9,13 @@ public class PostEntity {
     private Long id;
     private String title;
     private String content;
-    private String author;
+    private Long authorId;
 
-    public PostEntity(String title, String content, String author) {
+    public PostEntity(String title, String content, Long authorId) {
         this.id = AUTO_INCREMENT++;
         this.title = title;
         this.content = content;
-        this.author = author;
+        this.authorId = authorId;
     }
 
     public void modify(String title, String content) {
