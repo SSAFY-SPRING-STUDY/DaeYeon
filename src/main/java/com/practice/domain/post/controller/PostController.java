@@ -1,5 +1,8 @@
 package com.practice.domain.post.controller;
 
+import com.practice.domain.ApiResponse;
+import com.practice.domain.auth.service.AuthService;
+import com.practice.domain.auth.util.AuthorizationUtils;
 import com.practice.domain.post.controller.dto.request.PostRequest;
 import com.practice.domain.post.controller.dto.response.PostResponse;
 import com.practice.domain.post.service.PostService;
@@ -15,34 +18,39 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-
+    private final AuthService authService;
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PostResponse createPost(@RequestBody PostRequest request) {
-        return postService.save(request);
+    public ApiResponse<PostResponse> createPost(@RequestBody PostRequest request, @RequestHeader("Authorization")String accessToken) {
+        String token = AuthorizationUtils.getAccessToken(accessToken);
+        Long memberId = authService.getMemberId(token);
+
+        return ApiResponse.success(postService.save(request, memberId));
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<PostResponse> findAllPosts() {
-        return postService.findAll();
+    public ApiResponse<List<PostResponse>> findAllPosts() {
+        return ApiResponse.success(postService.findAll());
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PostResponse findPostById(@PathVariable Long id) {
-        return postService.findById(id);
+    public ApiResponse<PostResponse> findPostById(@PathVariable Long id) {
+        return ApiResponse.success(postService.findById(id));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updatePost(@PathVariable Long id, @RequestBody PostRequest request) {
+    public ApiResponse<Void> updatePost(@PathVariable Long id, @RequestBody PostRequest request) {
         postService.update(id, request);
+        return ApiResponse.success();
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePost(@PathVariable Long id) {
+    public ApiResponse<Void> deletePost(@PathVariable Long id) {
         postService.deleteById(id);
+        return ApiResponse.success();
     }
 }
