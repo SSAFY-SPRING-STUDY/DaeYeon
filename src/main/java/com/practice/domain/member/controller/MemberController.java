@@ -1,5 +1,6 @@
 package com.practice.domain.member.controller;
 
+import com.practice.domain.ApiResponse;
 import com.practice.domain.auth.service.AuthService;
 import com.practice.domain.auth.util.AuthorizationUtils;
 import com.practice.domain.member.controller.dto.request.MemberRequest;
@@ -19,16 +20,16 @@ public class MemberController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MemberResponse createMember(@RequestBody MemberRequest request){
+    public ApiResponse<MemberResponse> createMember(@RequestBody MemberRequest request){
         MemberResponse response = memberService.createMember(request);
-        return response;
+        return ApiResponse.success(response);
     }
 
     @GetMapping("/me")
     @ResponseStatus(HttpStatus.OK)
-    public MemberResponse getMyInfo(@RequestHeader("Authorization") String authHeader){
+    public ApiResponse<MemberResponse> getMyInfo(@RequestHeader("Authorization") String authHeader){
         String token = AuthorizationUtils.getAccessToken(authHeader);
         Long memberId = authService.getMemberId(token);
-        return memberService.findById(memberId);
+        return ApiResponse.success(memberService.findById(memberId));
     }
 }

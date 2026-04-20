@@ -34,6 +34,6 @@ public class AuthService {
     }
 
     public Long getMemberId(String token){
-        return sessionManager.getMemberId(token).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        return sessionManager.getMemberId(token).orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED));
     }
 }

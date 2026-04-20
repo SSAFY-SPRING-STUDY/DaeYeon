@@ -1,5 +1,6 @@
 package com.practice.domain.auth.controller;
 
+import com.practice.domain.ApiResponse;
 import com.practice.domain.auth.controller.dto.request.LoginRequest;
 import com.practice.domain.auth.controller.dto.response.LoginResponse;
 import com.practice.domain.auth.service.AuthService;
@@ -21,14 +22,15 @@ public class AuthController {
      */
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public LoginResponse login(@RequestBody LoginRequest request) {
-        return authService.login(request);
+    public ApiResponse<LoginResponse> login(@RequestBody LoginRequest request) {
+        return ApiResponse.success(authService.login(request));
     }
 
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logout(@RequestHeader("Authorization") String authHeader) {
+    public ApiResponse<Void> logout(@RequestHeader("Authorization") String authHeader) {
         String accessToken = AuthorizationUtils.getAccessToken(authHeader);
         authService.logout(accessToken);
+        return ApiResponse.success();
     }
 }
