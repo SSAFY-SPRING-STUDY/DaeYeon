@@ -1,8 +1,8 @@
 package com.practice.domain.auth.service;
 
 import com.practice.domain.auth.component.SessionManager;
-import com.practice.domain.auth.controller.dto.request.LoginRequest;
-import com.practice.domain.auth.controller.dto.response.LoginResponse;
+import com.practice.domain.auth.controller.dto.LoginRequest;
+import com.practice.domain.auth.controller.dto.LoginResponse;
 import com.practice.domain.member.entity.MemberEntity;
 import com.practice.domain.member.repository.MemberRepository;
 import com.practice.global.exception.CustomException;
@@ -18,15 +18,14 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request){
         MemberEntity member = memberRepository.findByLoginId(request.loginId())
-                .orElseThrow(() -> new CustomException(ErrorCode.LOGINID_NOT_FOUND));
-
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_USERNAME));
         // 나중에는 passwordEncoder 사용해서 (rawPassword, encodedPassword)형태로.
         // 지금은 학습 수준이니까 용인
         if(member.isValidPassword(request.password())){
             String token = sessionManager.createSession(member.getId());
             return new LoginResponse(token, "Bearer");
         }
-        throw new CustomException(ErrorCode.LOGINPASSWORD_NOT_MATCHED);
+        throw new CustomException(ErrorCode.INVALID_PASSWORD);
     }
 
     public void logout(String accessToken) {
@@ -34,6 +33,6 @@ public class AuthService {
     }
 
     public Long getMemberId(String token){
-        return sessionManager.getMemberId(token).orElseThrow(() -> new CustomException(ErrorCode.UNAUTHORIZED));
+        return sessionManager.getMemberId(token);
     }
 }

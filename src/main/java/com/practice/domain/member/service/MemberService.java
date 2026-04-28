@@ -1,7 +1,7 @@
 package com.practice.domain.member.service;
 
-import com.practice.domain.member.controller.dto.request.MemberRequest;
-import com.practice.domain.member.controller.dto.response.MemberResponse;
+import com.practice.domain.member.controller.dto.MemberRequest;
+import com.practice.domain.member.controller.dto.MemberResponse;
 import com.practice.domain.member.entity.MemberEntity;
 import com.practice.domain.member.repository.MemberRepository;
 import com.practice.global.exception.CustomException;

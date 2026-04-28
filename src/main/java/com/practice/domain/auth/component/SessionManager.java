@@ -1,5 +1,7 @@
 package com.practice.domain.auth.component;
 
+import com.practice.global.exception.CustomException;
+import com.practice.global.exception.error.ErrorCode;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -17,10 +19,12 @@ public class SessionManager {
         return token;
     }
 
-    public Optional<Long> getMemberId(String token){
-        if(sessionStore.get(token) == null)
-            return Optional.empty();
-        return Optional.of(sessionStore.get(token));
+    public Long getMemberId(String token){
+        Long memberId = sessionStore.get(token);
+        if(memberId == null) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+        return memberId;
     }
 
     public void removeSession(String token){

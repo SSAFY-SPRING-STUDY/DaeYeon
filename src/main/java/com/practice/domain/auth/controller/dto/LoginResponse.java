@@ -1,4 +1,4 @@
-package com.practice.domain.auth.controller.dto.response;
+package com.practice.domain.auth.controller.dto;
 
 public record LoginResponse(
         String accessToken,

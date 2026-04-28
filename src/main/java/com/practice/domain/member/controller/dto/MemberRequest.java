@@ -1,4 +1,4 @@
-package com.practice.domain.member.controller.dto.request;
+package com.practice.domain.member.controller.dto;
 
 import com.practice.domain.member.entity.MemberEntity;
 

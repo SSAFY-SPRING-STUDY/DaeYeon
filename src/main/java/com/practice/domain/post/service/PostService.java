@@ -1,11 +1,11 @@
 package com.practice.domain.post.service;
 
-import com.practice.domain.member.controller.dto.response.MemberResponse;
+import com.practice.domain.member.controller.dto.MemberResponse;
 import com.practice.domain.member.entity.MemberEntity;
 import com.practice.domain.member.repository.MemberRepository;
 import com.practice.domain.member.service.MemberService;
-import com.practice.domain.post.controller.dto.request.PostRequest;
-import com.practice.domain.post.controller.dto.response.PostResponse;
+import com.practice.domain.post.controller.dto.PostRequest;
+import com.practice.domain.post.controller.dto.PostResponse;
 import com.practice.domain.post.entity.PostEntity;
 import com.practice.domain.post.repository.PostRepository;
 import com.practice.global.exception.CustomException;
@@ -20,21 +20,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     public PostResponse save(PostRequest request, Long authorId) {
-        PostEntity postEntity = PostRequest.toEntity(request, authorId);
+        MemberEntity author = memberRepository.findById(authorId).orElseThrow(
+                () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
+        );
+        PostEntity postEntity = PostRequest.toEntity(request, author);
         PostEntity savedEntity = postRepository.save(postEntity);
-        MemberResponse memberResponse = memberService.findById(authorId);
-        return PostResponse.fromEntity(savedEntity, memberResponse);
+        return PostResponse.fromEntity(savedEntity);
     }
 
     public List<PostResponse> findAll() {
         List<PostEntity> postList = postRepository.findAll();
         List<PostResponse> list = new ArrayList<>();
         for (PostEntity postEntity : postList) {
-            MemberResponse memberResponse = memberService.findById(postEntity.getAuthorId());
-            PostResponse response = PostResponse.fromEntity(postEntity, memberResponse);
+            PostResponse response = PostResponse.fromEntity(postEntity);
             list.add(response);
         }
         return list;
@@ -44,21 +45,27 @@ public class PostService {
         PostEntity post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(ErrorCode.POST_NOT_FOUND)
         );
-        MemberResponse memberResponse = memberService.findById(post.getAuthorId());
-        return PostResponse.fromEntity(post, memberResponse);
+        return PostResponse.fromEntity(post);
     }
 
-    public void update(Long id, PostRequest request) {
+    public PostResponse update(PostRequest request, Long id, Long authorId) {
         PostEntity post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(ErrorCode.POST_NOT_FOUND)
         );
+        if(!post.getAuthor().getId().equals(authorId)){
+            throw new CustomException(ErrorCode.INVALID_PERMISSION);
+        }
         post.modify(request.title(), request.content());
+        return PostResponse.fromEntity(post);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Long id, Long authorId) {
         PostEntity post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(ErrorCode.POST_NOT_FOUND)
         );
+        if(!post.getAuthor().getId().equals(authorId)){
+            throw new CustomException(ErrorCode.INVALID_PERMISSION);
+        }
         postRepository.delete(post);
     }
 }
