@@ -1,8 +1,10 @@
 package com.practice.domain.auth.controller;
 
-import com.practice.domain.ApiResponse;
-import com.practice.domain.auth.controller.dto.request.LoginRequest;
-import com.practice.domain.auth.controller.dto.response.LoginResponse;
+import com.practice.global.exception.CustomException;
+import com.practice.global.exception.error.ErrorCode;
+import com.practice.global.response.ApiResponse;
+import com.practice.domain.auth.controller.dto.LoginRequest;
+import com.practice.domain.auth.controller.dto.LoginResponse;
 import com.practice.domain.auth.service.AuthService;
 import com.practice.domain.auth.util.AuthorizationUtils;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,9 @@ public class AuthController {
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ApiResponse<Void> logout(@RequestHeader("Authorization") String authHeader) {
+        if(!AuthorizationUtils.isValidToken(authHeader)){
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
         String accessToken = AuthorizationUtils.getAccessToken(authHeader);
         authService.logout(accessToken);
         return ApiResponse.success();

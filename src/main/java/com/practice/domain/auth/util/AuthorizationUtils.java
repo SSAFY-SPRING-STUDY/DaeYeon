@@ -5,10 +5,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthorizationUtils {
+    private static final String BEARER_PREFIX = "Bearer ";
+
+    public static boolean isValidToken(String authHeader){
+        return authHeader != null && authHeader.startsWith(BEARER_PREFIX);
+    }
     public static String getAccessToken(String authHeader) {
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7); // "Bearer " 이후 토큰만 추출
-        }
-        throw new IllegalArgumentException("Invalid Authorization header");
+        return authHeader.substring(BEARER_PREFIX.length()); // "Bearer " 이후 토큰만 추출
     }
 }

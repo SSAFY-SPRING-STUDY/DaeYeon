@@ -1,4 +1,4 @@
-package com.practice.domain;
+package com.practice.global.response;
 
 import com.practice.global.exception.error.ErrorCode;
 
@@ -16,5 +16,9 @@ public record ApiResponse<T>(
 
   public static ApiResponse<Void> error(ErrorCode errorCode){
     return new ApiResponse<>(errorCode.getMessage(), null);
+  }
+
+  public static <T> ApiResponse<T> error(ErrorCode errorCode, T data) {
+    return new ApiResponse<>(errorCode.getMessage(), data);
   }
 }
