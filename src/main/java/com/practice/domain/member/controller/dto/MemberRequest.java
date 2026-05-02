@@ -7,7 +7,7 @@ public record MemberRequest(
         String password,
         String name
 ){
-    public static MemberEntity toEntity(MemberRequest request){
-        return new MemberEntity(request.loginId, request.password, request.name);
+    public MemberEntity toEntity(){
+        return MemberEntity.create(loginId, password, name);
     }
 }

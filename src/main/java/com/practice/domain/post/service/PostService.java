@@ -10,6 +10,7 @@ import com.practice.domain.post.entity.PostEntity;
 import com.practice.domain.post.repository.PostRepository;
 import com.practice.global.exception.CustomException;
 import com.practice.global.exception.error.ErrorCode;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class PostService {
         MemberEntity author = memberRepository.findById(authorId).orElseThrow(
                 () -> new CustomException(ErrorCode.MEMBER_NOT_FOUND)
         );
-        PostEntity postEntity = PostRequest.toEntity(request, author);
+        PostEntity postEntity = request.toEntity(author);
         PostEntity savedEntity = postRepository.save(postEntity);
         return PostResponse.fromEntity(savedEntity);
     }
@@ -48,6 +49,7 @@ public class PostService {
         return PostResponse.fromEntity(post);
     }
 
+    @Transactional
     public PostResponse update(PostRequest request, Long id, Long authorId) {
         PostEntity post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(ErrorCode.POST_NOT_FOUND)
