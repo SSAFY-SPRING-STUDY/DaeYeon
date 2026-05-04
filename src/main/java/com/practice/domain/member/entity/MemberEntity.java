@@ -1,24 +1,36 @@
 package com.practice.domain.member.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberEntity {
-    private static Long AUTO_INCREMENT = 1L;
 
-    private final Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String loginId;
     private String password;
-    private final String name;
+    private String name;
+
+    private MemberEntity(String loginId, String password, String name) {
+        this.loginId = loginId;
+        this.password = password;
+        this.name = name;
+    }
+    public static MemberEntity create(String loginId, String password, String name) {
+        return new MemberEntity(loginId, password, name);
+    }
 
     public boolean isValidPassword(String password){
         return this.password.equals(password);
     }
 
-    public MemberEntity(String loginId, String password, String name) {
-        this.id = AUTO_INCREMENT++;
-        this.loginId = loginId;
-        this.password = password;
-        this.name = name;
-    }
 }

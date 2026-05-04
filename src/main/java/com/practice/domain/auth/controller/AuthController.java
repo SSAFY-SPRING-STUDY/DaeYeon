@@ -1,12 +1,12 @@
 package com.practice.domain.auth.controller;
 
-import com.practice.global.exception.CustomException;
-import com.practice.global.exception.error.ErrorCode;
-import com.practice.global.response.ApiResponse;
 import com.practice.domain.auth.controller.dto.LoginRequest;
 import com.practice.domain.auth.controller.dto.LoginResponse;
 import com.practice.domain.auth.service.AuthService;
 import com.practice.domain.auth.util.AuthorizationUtils;
+import com.practice.global.exception.CustomException;
+import com.practice.global.exception.error.ErrorCode;
+import com.practice.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

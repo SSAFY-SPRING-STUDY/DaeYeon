@@ -7,8 +7,8 @@ public record PostRequest(
     String title,
     String content
 ){
-    public static PostEntity toEntity(PostRequest request, MemberEntity memberEntity) {
-        return PostEntity.create(request.title, request.content, memberEntity);
+    public PostEntity toEntity(MemberEntity memberEntity) {
+        return PostEntity.create(title, content, memberEntity);
     }
 }
 
