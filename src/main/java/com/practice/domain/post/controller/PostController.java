@@ -1,14 +1,13 @@
 package com.practice.domain.post.controller;
 
 import com.practice.domain.auth.component.SessionManager;
-import com.practice.global.exception.CustomException;
-import com.practice.global.exception.error.ErrorCode;
-import com.practice.global.response.ApiResponse;
-import com.practice.domain.auth.service.AuthService;
 import com.practice.domain.auth.util.AuthorizationUtils;
 import com.practice.domain.post.controller.dto.PostRequest;
 import com.practice.domain.post.controller.dto.PostResponse;
 import com.practice.domain.post.service.PostService;
+import com.practice.global.exception.CustomException;
+import com.practice.global.exception.error.ErrorCode;
+import com.practice.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

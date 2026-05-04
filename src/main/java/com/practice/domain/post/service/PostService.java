@@ -1,9 +1,7 @@
 package com.practice.domain.post.service;
 
-import com.practice.domain.member.controller.dto.MemberResponse;
 import com.practice.domain.member.entity.MemberEntity;
 import com.practice.domain.member.repository.MemberRepository;
-import com.practice.domain.member.service.MemberService;
 import com.practice.domain.post.controller.dto.PostRequest;
 import com.practice.domain.post.controller.dto.PostResponse;
 import com.practice.domain.post.entity.PostEntity;

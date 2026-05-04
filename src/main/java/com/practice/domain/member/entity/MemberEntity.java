@@ -5,14 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberEntity {
 
     @Id
@@ -22,11 +20,17 @@ public class MemberEntity {
     private String password;
     private String name;
 
+    private MemberEntity(String loginId, String password, String name) {
+        this.loginId = loginId;
+        this.password = password;
+        this.name = name;
+    }
+    public static MemberEntity create(String loginId, String password, String name) {
+        return new MemberEntity(loginId, password, name);
+    }
+
     public boolean isValidPassword(String password){
         return this.password.equals(password);
     }
 
-    public static MemberEntity create(String loginId, String password, String name) {
-        return new MemberEntity(null, loginId, password, name);
-    }
 }
